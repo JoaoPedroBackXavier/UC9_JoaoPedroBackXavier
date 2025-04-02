@@ -4,19 +4,30 @@
  */
 package com.mycompany.bancodedados;
 
+import java.sql.Connection;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JOAOPEDROBACKXAVIER
  */
 public class TelaTeste extends javax.swing.JFrame {
 
+    ConexaoSQLite conexaoSQLite;
+    Connection conexao;
+    private String idString;
+    
     /**
      * Creates new form TelaTeste
      */
-    public TelaTeste() {
+    public TelaTeste(String id, String name, String email, String senha) {
         initComponents();
-        Titulo.setText(" bem vindo ");
-        
+        Titulo.setText(" bem vindo " + name);
+        fieldEmail.setText(email);
+        fieldName.setText(name);
+        conexaoSQLite = new ConexaoSQLite();
+        conexao = conexaoSQLite.conectar();
+        this.idString = id;
     }
 
     /**
@@ -29,25 +40,35 @@ public class TelaTeste extends javax.swing.JFrame {
     private void initComponents() {
 
         Titulo = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        fieldName = new javax.swing.JTextField();
+        fieldEmail = new javax.swing.JTextField();
+        fieldSenha = new javax.swing.JPasswordField();
+        butomAtualizas = new javax.swing.JButton();
+        butomDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Titulo.setText("seja bem-vindo");
 
-        jTextField1.setText("nome...");
+        fieldName.setText("nome...");
 
-        jTextField2.setText("email...");
+        fieldEmail.setText("email...");
 
-        jPasswordField1.setText("jPasswordField1");
+        fieldSenha.setText("jPasswordField1");
 
-        jButton1.setText("Atualizar");
+        butomAtualizas.setText("Atualizar");
+        butomAtualizas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butomAtualizasActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Deletar");
+        butomDelete.setText("Deletar");
+        butomDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butomDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,41 +76,57 @@ public class TelaTeste extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butomDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(110, 110, 110)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jPasswordField1)
-                                .addComponent(jTextField1)
-                                .addComponent(jTextField2))
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(fieldSenha)
+                                .addComponent(fieldName)
+                                .addComponent(fieldEmail))
+                            .addComponent(butomAtualizas, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(85, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(Titulo)
-                .addGap(147, 147, 147))
+                .addGap(152, 152, 152))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(20, 20, 20)
                 .addComponent(Titulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(butomAtualizas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(butomDelete)
                 .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void butomAtualizasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butomAtualizasActionPerformed
+        int id = Integer.parseInt(idString);
+        String novoNome = fieldName.getText();
+        String novoEmail = fieldEmail.getText();
+        String novaSenha = new String(fieldSenha.getPassword());
+        AtualizarUsuario.atualizarUsuarios(conexao, id, novoNome, novoEmail, novaSenha);
+        JOptionPane.showMessageDialog(null, "Usuario atualizado com suceso!");
+
+    }//GEN-LAST:event_butomAtualizasActionPerformed
+
+    private void butomDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butomDeleteActionPerformed
+        int id = Integer.parseInt(idString);
+        DeletarUsuario.deletarUsuario(conexao, id);
+        this.dispose();
+    }//GEN-LAST:event_butomDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,17 +158,16 @@ public class TelaTeste extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaTeste().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Titulo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton butomAtualizas;
+    private javax.swing.JButton butomDelete;
+    private javax.swing.JTextField fieldEmail;
+    private javax.swing.JTextField fieldName;
+    private javax.swing.JPasswordField fieldSenha;
     // End of variables declaration//GEN-END:variables
 }

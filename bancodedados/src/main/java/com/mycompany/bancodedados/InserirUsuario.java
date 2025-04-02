@@ -16,7 +16,13 @@ public class InserirUsuario {
     // Definimos o método inserirUsuario, que recebe uma conexão com o banco de dados (conexao),
     // um nome de usuário (nome) e um email de usuário (email).
     public static void inserirUsuario(Connection conexao, String nome, String email, String senha) {
-
+        
+        
+        String aux[] = ListarUsuarios.buscarNomeEmail(conexao,nome,email);
+        if(!(aux.equals(null))){
+            throw new RuntimeException(" esse usuario já existe ");
+        }
+        
         // A string sql contém o comando SQL que será executado no banco de dados. 
         // O comando INSERT INTO vai inserir um novo registro na tabela "usuarios" com os valores de "nome" e "email".
         String sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)"; 

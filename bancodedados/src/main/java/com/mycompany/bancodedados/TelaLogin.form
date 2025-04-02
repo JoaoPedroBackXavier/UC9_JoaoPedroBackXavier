@@ -59,16 +59,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="nome..."/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoNomeFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="campoEmail">
       <Properties>
         <Property name="text" type="java.lang.String" value="email..."/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoEmailFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="campoSenha">
       <Properties>
         <Property name="text" type="java.lang.String" value="jPasswordField1"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>

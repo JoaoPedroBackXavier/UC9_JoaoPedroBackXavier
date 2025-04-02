@@ -25,16 +25,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jButton2" alignment="1" min="-2" pref="205" max="-2" attributes="0"/>
+                  <Component id="butomDelete" alignment="1" min="-2" pref="205" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace min="110" pref="110" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jPasswordField1" alignment="1" max="32767" attributes="0"/>
-                              <Component id="jTextField1" alignment="1" max="32767" attributes="0"/>
-                              <Component id="jTextField2" alignment="1" max="32767" attributes="0"/>
+                              <Component id="fieldSenha" alignment="1" max="32767" attributes="0"/>
+                              <Component id="fieldName" alignment="1" max="32767" attributes="0"/>
+                              <Component id="fieldEmail" alignment="1" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jButton1" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="butomAtualizas" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -43,25 +43,25 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               <Component id="Titulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="Titulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="fieldName" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTextField2" min="-2" max="-2" attributes="0"/>
+              <Component id="fieldEmail" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jPasswordField1" min="-2" max="-2" attributes="0"/>
+              <Component id="fieldSenha" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="butomAtualizas" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="butomDelete" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="98" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -73,30 +73,36 @@
         <Property name="text" type="java.lang.String" value="seja bem-vindo"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="fieldName">
       <Properties>
         <Property name="text" type="java.lang.String" value="nome..."/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="fieldEmail">
       <Properties>
         <Property name="text" type="java.lang.String" value="email..."/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+    <Component class="javax.swing.JPasswordField" name="fieldSenha">
       <Properties>
         <Property name="text" type="java.lang.String" value="jPasswordField1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="butomAtualizas">
       <Properties>
         <Property name="text" type="java.lang.String" value="Atualizar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butomAtualizasActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="butomDelete">
       <Properties>
         <Property name="text" type="java.lang.String" value="Deletar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butomDeleteActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

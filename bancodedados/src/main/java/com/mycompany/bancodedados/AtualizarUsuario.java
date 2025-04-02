@@ -13,11 +13,11 @@ import java.sql.PreparedStatement;
  */
 public class AtualizarUsuario {
     
-    public static void atualizarUsuarios(Connection conexao, int id, String novoNome, String novoEmail) {
+    public static void atualizarUsuarios(Connection conexao, int id, String novoNome, String novoEmail, String novaSenha) {
         
         // A string SQL que vai realizar a atualização. 
         // A cláusula WHERE é usada para especificar qual usuário será atualizado com base no ID.
-        String sql = "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?";
 
         try {
             // Cria um PreparedStatement para executar o SQL com parâmetros.
@@ -31,8 +31,10 @@ public class AtualizarUsuario {
                 // Substitui o segundo parâmetro (?) com o novo email fornecido.
                 pstmt.setString(2, novoEmail);
                 
+                pstmt.setString(3, novaSenha);
+                
                 // Substitui o terceiro parâmetro (?) com o ID do usuário para identificar qual usuário atualizar.
-                pstmt.setInt(3, id);
+                pstmt.setInt(4, id);
                 
                 // Executa o comando SQL e retorna o número de linhas afetadas pela operação.
                 int rowsUpdated = pstmt.executeUpdate();

@@ -51,18 +51,22 @@ public class ListarUsuarios {
         return textoUsuarios;
     }
     
-    public static String buscarUsuario(Connection conexao, String email, String senha){
+    public static String[] buscarUsuario(Connection conexao, String nome, String email, String senha){
         String comando1 = "SELECT * FROM usuarios WHERE email = ? AND senha = ? AND nome = ?";
-        String nome = "";
+        String[] info = new String[4];
         try( PreparedStatement pstmt = conexao.prepareStatement(comando1)){
             pstmt.setString(1,email);
             pstmt.setString(2,senha);
+            pstmt.setString(3,nome);
             ResultSet rs = pstmt.executeQuery();
             
             if(rs.next()){
-                nome = rs.getString("nome");
+                info[0] = rs.getString("id");
+                info[1] = rs.getString("nome");
+                info[2] = rs.getString("email");
+                info[3] = rs.getString("senha");
                 System.out.println("usuario encontrado");
-                return nome;
+                return info;
             } else {
                 System.out.println("usuario nao encontrado");
             }
@@ -74,5 +78,33 @@ public class ListarUsuarios {
         return null;
         
     }
+    
+        public static String[] buscarNomeEmail(Connection conexao, String nome, String email){
+        String comando1 = "SELECT * FROM usuarios WHERE email = ? AND nome = ?";
+        String[] info = new String[4];
+        try( PreparedStatement pstmt = conexao.prepareStatement(comando1)){
+            pstmt.setString(1,email);
+            pstmt.setString(2,nome);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()){
+                info[0] = rs.getString("id");
+                info[1] = rs.getString("nome");
+                info[2] = rs.getString("email");
+                System.out.println("usuario encontrado");
+                return info;
+            } else {
+                System.out.println("usuario nao encontrado");
+            }
+            
+        }   catch(SQLException error){
+            JOptionPane.showMessageDialog(null, "erro: " + error.getMessage());
+            
+        }
+        return null;
+        
+    }
+    
+
     
 }

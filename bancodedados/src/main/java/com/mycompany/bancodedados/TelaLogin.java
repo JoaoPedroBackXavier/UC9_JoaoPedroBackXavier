@@ -5,12 +5,13 @@
 package com.mycompany.bancodedados;
 
 import java.sql.Connection;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author JOAOPEDROBACKXAVIER
  */
-public class jeifraime extends javax.swing.JFrame {
+public class TelaLogin extends javax.swing.JFrame {
 
     /**
      * Creates new form jeifraime
@@ -18,32 +19,40 @@ public class jeifraime extends javax.swing.JFrame {
         ConexaoSQLite conexaoSQLite;
         Connection conexao;
     
-    public jeifraime() {
+    public TelaLogin() {
         initComponents();
         conexaoSQLite = new ConexaoSQLite();
         conexao = conexaoSQLite.conectar();
         CriarTabela.criarTabelaUsuarios(conexao);
     }
     
-    public void clicked(){
+    public void registerButtomClicked(){
         String nome = campoNome.getText();
         String email = campoEmail.getText();
         char[] senhaBruta = campoSenha.getPassword();       
         String senha = new String(senhaBruta);
-        InserirUsuario.inserirUsuario(conexao, nome, email,senha);
-        new TelaTeste().setVisible(true);
-        this.dispose(); 
+        try{InserirUsuario.inserirUsuario(conexao, nome, email,senha);}
+        catch(Exception erro){JOptionPane.showMessageDialog(null, "Erro: "+erro); return;}
+        
+        
+        String info[] = ListarUsuarios.buscarUsuario(conexao, nome, email,senha);
+        
+        if(info.length > 0){
+            new TelaTeste(info[0], info[1], info[2], info[3]).setVisible(true);
+            this.dispose(); 
+        }
     }
     
-    public void clicked2(){
+    public void loginButtomClicked(){
+        String nome = campoNome.getText();
         String email = campoEmail.getText();
         String senha = new String(campoSenha.getPassword());
         
         
-        String nome = ListarUsuarios.buscarUsuario(conexao,email,senha);
+        String info[] = ListarUsuarios.buscarUsuario(conexao, nome, email,senha);
         
-        if(nome != null){
-            new TelaTeste().setVisible(true);
+        if(info.length > 0){
+            new TelaTeste(info[0], info[1], info[2], info[3]).setVisible(true);
             this.dispose(); 
         }
     }
@@ -66,10 +75,25 @@ public class jeifraime extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         campoNome.setText("nome...");
+        campoNome.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoNomeFocusGained(evt);
+            }
+        });
 
         campoEmail.setText("email...");
+        campoEmail.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoEmailFocusGained(evt);
+            }
+        });
 
         campoSenha.setText("jPasswordField1");
+        campoSenha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoSenhaFocusGained(evt);
+            }
+        });
 
         jButton1.setText("register");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -119,12 +143,24 @@ public class jeifraime extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        clicked();
+        registerButtomClicked();
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void botaoLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoLoginMouseClicked
-        clicked2();
+        loginButtomClicked();
     }//GEN-LAST:event_botaoLoginMouseClicked
+
+    private void campoNomeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoNomeFocusGained
+   //     campoNome.setText("");
+    }//GEN-LAST:event_campoNomeFocusGained
+
+    private void campoEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoEmailFocusGained
+   //     campoEmail.setText("");
+    }//GEN-LAST:event_campoEmailFocusGained
+
+    private void campoSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaFocusGained
+   //   campoSenha.setText("");
+    }//GEN-LAST:event_campoSenhaFocusGained
 
     /**
      * @param args the command line arguments
@@ -143,20 +179,21 @@ public class jeifraime extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jeifraime.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jeifraime.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jeifraime.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jeifraime.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new jeifraime().setVisible(true);
+                new TelaLogin().setVisible(true);
             }
         });
     }
