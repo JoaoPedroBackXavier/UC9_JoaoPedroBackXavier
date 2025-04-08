@@ -2,23 +2,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.mavenproject1.dao;
+package com.mycompany.library.dao;
 
-import com.mycompany.mavenproject1.model.Livro;
+import com.mycompany.library.database.ConnectSQLite;
+import com.mycompany.library.model.Livro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
  * @author JOAOPEDROBACKXAVIER
  */
 public class BooksDAO {
+
     
-    public static void addBook(Connection connection, Livro livro){
+    public static void addBook( Livro livro){
         String sql = "INSERT INTO books(title,author,price,year) VALUES (?,?,?,?)";
-        
+        ConnectSQLite connectSQLite = new ConnectSQLite();
+        Connection connection = connectSQLite.connect();
         try(PreparedStatement pstmt = connection.prepareStatement(sql)){
             
             pstmt.setString(1, livro.getTitle());
@@ -35,20 +40,23 @@ public class BooksDAO {
         
     }
     
-    public static void updateBook(Connection connection, int id, String title, String author, Double price, int year){
+    public static void updateBook(Livro meuLivro){
+        ConnectSQLite connectSQLite = new ConnectSQLite();
+        Connection connection = connectSQLite.connect();
+        
         String sql = "UPDATE books "
                    + "SET title = ?,"
                    + "author = ?,"
                    + "price = ?,"
-                   + "year = ?,"
+                   + "year = ?"
                    + "WHERE id = ?";
         
         try(PreparedStatement pstmt = connection.prepareStatement(sql)){
-            pstmt.setString(1, title);
-            pstmt.setString(2, author);
-            pstmt.setDouble(3, price);
-            pstmt.setInt(4, year);
-            pstmt.setInt(5, id);
+            pstmt.setString(1, meuLivro.getTitle());
+            pstmt.setString(2, meuLivro.getAuthor());
+            pstmt.setDouble(3, meuLivro.getPrice());
+            pstmt.setInt(4, meuLivro.getYear());
+            pstmt.setInt(5, meuLivro.getId());
             
             int rowsUpdated = pstmt.executeUpdate();
             if(rowsUpdated > 0){
@@ -60,8 +68,10 @@ public class BooksDAO {
         }catch( SQLException erro){System.out.println("erro: "+erro);}
     }
     
-    public static void deleteBook(Connection connection, int id){
-        String sql = "DELETE books WHERE id = ?";
+    public static void deleteBook(int id){
+        ConnectSQLite connectSQLite = new ConnectSQLite();
+        Connection connection = connectSQLite.connect();
+        String sql = "DELETE FROM books WHERE id = ?";
         
         try(PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, id);
@@ -76,7 +86,9 @@ public class BooksDAO {
         
     }
     
-    public static String[] findBook(Connection connection, int id){
+    public static String[] findBook(int id){
+        ConnectSQLite connectSQLite = new ConnectSQLite();
+        Connection connection = connectSQLite.connect();
         String sql = "SELECT * FROM books WHERE id = ?";
         String[] info = new String[4];
         
@@ -90,9 +102,32 @@ public class BooksDAO {
                 info[3] = rs.getString("year");
                 
             }
-            
-            
         }catch( SQLException erro){System.out.println("erro: "+erro);}
+        return info;
+    }
+    
+    public static ArrayList<Livro> findBooks(){
+        ConnectSQLite connectSQLite = new ConnectSQLite();
+        Connection connection = connectSQLite.connect();
+        String sql = "SELECT * FROM books";
+        ArrayList<Livro> info = new ArrayList<>();
+        
+        try(Statement stmt = connection .createStatement()){
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            while(rs.next()){
+                Livro myBook = new Livro(
+                    rs.getString("title"),
+                    rs.getString("author"),
+                    rs.getDouble("price"),
+                    rs.getInt("year")
+                );
+                myBook.setId(rs.getInt("id"));
+                info.add(myBook);
+            }
+        }catch(SQLException erro){
+            System.out.println("erro: "+erro);
+        }
         return info;
     }
 }

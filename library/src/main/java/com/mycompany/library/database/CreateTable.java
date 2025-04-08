@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.mavenproject1.database;
+package com.mycompany.library.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,8 +13,9 @@ import java.sql.Statement;
  * @author JOAOPEDROBACKXAVIER
  */
 public class CreateTable {
-    public static void createTable(Connection connection){
-        
+    public static void createTable(){
+         ConnectSQLite connectSQLite = new ConnectSQLite();
+         Connection connection = connectSQLite.connect();
         String sql = "CREATE TABLE IF NOT EXISTS books("
                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                    + "title VARCHAR(100) NOT NULL,"
