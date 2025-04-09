@@ -11,12 +11,16 @@ import com.mycompany.library.Controller.BookController;
     import com.mycompany.library.model.Livro;
     import java.sql.Connection;
     import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author JOAOPEDROBACKXAVIER
  */
 public class TelaLogin extends javax.swing.JFrame {
 
+    DefaultListModel<String> model = new DefaultListModel<>();
+    
     /**
      * Creates new form TelaLogin
      */
@@ -25,11 +29,14 @@ public class TelaLogin extends javax.swing.JFrame {
     
     public TelaLogin() {
         initComponents();
-        
+        list.setModel(model);
         ConnectSQLite connectSQLite = new ConnectSQLite();
         Connection connection = connectSQLite.connect();
-        CreateTable.createTable();       
+        CreateTable.createTable(); 
+        updateList();
     }
+    
+
     
    
     private void addClick(){
@@ -38,21 +45,39 @@ public class TelaLogin extends javax.swing.JFrame {
         String price = fieldPrice.getText();
         String year = fieldYear.getText();        
         BookController.addBook(titulo, author, price, year);
+        updateList();
     }
     
     private void updateClick(){
         String titulo = fieldTitulo.getText();
         String author = fieldAuthor.getText();
         String price = fieldPrice.getText();
-        String year = fieldYear.getText();   
-        String id = fieldId.getText(); 
-        BookController.updateBook(id, titulo, author, price, year);
+        String year = fieldYear.getText(); 
+        int idSelected = list.getSelectedIndex();
+        
+        if (idSelected != -1){
+            Livro bookSelected = BookController.getBookByIndex(idSelected);
+            if(bookSelected != null){
+                int id = bookSelected.getId();
+                BookController.updateBook(id, titulo, author, price, year);  
+                JOptionPane.showMessageDialog(this, "book was updated");
+                updateList();
+            }    
+        }
     }
     
     private void deleteClick(){
-        String id = fieldId.getText(); 
-        
-        BookController.DeleteBook(id);
+        int idSelected = list.getSelectedIndex();
+        if (idSelected != -1){
+            Livro bookSelected = BookController.getBookByIndex(idSelected);
+            if(bookSelected != null){
+                int id = bookSelected.getId();  
+                BookController.DeleteBook(id);
+                JOptionPane.showMessageDialog(this, "book was deleted");
+                updateList();
+            }    
+        }
+        updateList();
     }
 
     /**
@@ -74,7 +99,6 @@ public class TelaLogin extends javax.swing.JFrame {
         fieldYear = new javax.swing.JTextField();
         buttomRemove = new javax.swing.JButton();
         fieldUpdate = new javax.swing.JButton();
-        fieldId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -121,38 +145,39 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
 
-        fieldId.setText("id");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 210, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(fieldPrice, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(fieldAuthor, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(fieldTitulo)
-                        .addComponent(jScrollPane3)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(buttomAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(ButtomSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(fieldYear, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(fieldUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(buttomRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(268, 268, 268))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttomAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ButtomSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                    .addComponent(buttomRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(40, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(25, 25, 25)
                 .addComponent(fieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,11 +191,9 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(buttomRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                    .addComponent(fieldUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
+                    .addComponent(fieldUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                    .addComponent(buttomRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -226,13 +249,22 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void updateList(){
+        model.clear();
+        ArrayList<String> books = BookController.loadBooks();
+        for(String book : books){
+            model.addElement(book);
+        }
+        
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtomSearch;
     private javax.swing.JButton buttomAdd;
     private javax.swing.JButton buttomRemove;
     private javax.swing.JTextField fieldAuthor;
-    private javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldPrice;
     private javax.swing.JTextField fieldTitulo;
     private javax.swing.JButton fieldUpdate;
