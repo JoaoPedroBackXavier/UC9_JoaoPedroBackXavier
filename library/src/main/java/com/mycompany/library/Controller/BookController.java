@@ -6,7 +6,7 @@ package com.mycompany.library.Controller;
 
 import com.mycompany.library.dao.BooksDAO;
 import com.mycompany.library.database.ConnectSQLite;
-import com.mycompany.library.model.Livro;
+import com.mycompany.library.model.Book;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,12 +19,12 @@ import java.util.ArrayList;
  */
 public class BookController {
     
-    private static ArrayList<Livro> currentBooks = new ArrayList<>();
+    private static ArrayList<Book> currentBooks = new ArrayList<>();
     
     public static void addBook(String title, String author, String priceStr, String yearStr){
         double price = Double.parseDouble(priceStr);
         int year = Integer.parseInt(yearStr);
-        Livro myBook = new Livro(title,author,price,year);
+        Book myBook = new Book(title,author,price,year);
         
         BooksDAO.addBook(myBook);
     }
@@ -32,7 +32,7 @@ public class BookController {
     public static void updateBook(int id, String title, String author, String priceStr, String yearStr){
         double price = Double.parseDouble(priceStr);
         int year = Integer.parseInt(yearStr);
-        Livro myBook = new Livro(title,author,price,year);
+        Book myBook = new Book(title,author,price,year);
         myBook.setId(id);
         
         BooksDAO.updateBook(myBook);
@@ -42,7 +42,7 @@ public class BookController {
         BooksDAO.deleteBook(id);
     }
     
-    public static Livro getBookByIndex(int index){
+    public static Book getBookByIndex(int index){
         if (index >= 0 && index < currentBooks.size()){
             return currentBooks.get(index);
         }
@@ -54,7 +54,7 @@ public class BookController {
         ArrayList<String> formatedList = new ArrayList<>();
         currentBooks = BooksDAO.findBooks();
         
-        for (Livro book:currentBooks){
+        for (Book book:currentBooks){
             String details = "ID: " + book.getId() + " | "
                            + "Title: "+book.getTitle()+" | "
                            + "Author: "+book.getAuthor()+" | "
@@ -64,6 +64,12 @@ public class BookController {
         }
         return formatedList;
         
+    }
+    
+    public static String[] findBook(String idString){
+        int id = Integer.parseInt(idString);
+        String[] livros = BooksDAO.findBook(id);
+        return livros;
     }
     
 }

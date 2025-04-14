@@ -8,7 +8,7 @@ import com.mycompany.library.Controller.BookController;
     import com.mycompany.library.dao.BooksDAO;
     import com.mycompany.library.database.ConnectSQLite;
     import com.mycompany.library.database.CreateTable;
-    import com.mycompany.library.model.Livro;
+    import com.mycompany.library.model.Book;
     import java.sql.Connection;
     import java.util.ArrayList;
 import javax.swing.DefaultListModel;
@@ -56,7 +56,7 @@ public class TelaLogin extends javax.swing.JFrame {
         int idSelected = list.getSelectedIndex();
         
         if (idSelected != -1){
-            Livro bookSelected = BookController.getBookByIndex(idSelected);
+            Book bookSelected = BookController.getBookByIndex(idSelected);
             if(bookSelected != null){
                 int id = bookSelected.getId();
                 BookController.updateBook(id, titulo, author, price, year);  
@@ -69,7 +69,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void deleteClick(){
         int idSelected = list.getSelectedIndex();
         if (idSelected != -1){
-            Livro bookSelected = BookController.getBookByIndex(idSelected);
+            Book bookSelected = BookController.getBookByIndex(idSelected);
             if(bookSelected != null){
                 int id = bookSelected.getId();  
                 BookController.DeleteBook(id);
@@ -113,21 +113,58 @@ public class TelaLogin extends javax.swing.JFrame {
 
         ButtomSearch.setBackground(new java.awt.Color(10, 200, 200));
         ButtomSearch.setText("search");
+        ButtomSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ButtomSearchMouseClicked(evt);
+            }
+        });
 
         jScrollPane3.setViewportView(list);
 
-        fieldTitulo.setText("Title");
+        fieldTitulo.setText("inserir titulo");
+        fieldTitulo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fieldTituloFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldTituloFocusLost(evt);
+            }
+        });
         fieldTitulo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldTituloActionPerformed(evt);
             }
         });
 
-        fieldPrice.setText("Price");
+        fieldPrice.setText("inserir preco do livro");
+        fieldPrice.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fieldPriceFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldPriceFocusLost(evt);
+            }
+        });
 
-        fieldAuthor.setText("Author");
+        fieldAuthor.setText("inserir nome do autor");
+        fieldAuthor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fieldAuthorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldAuthorFocusLost(evt);
+            }
+        });
 
-        fieldYear.setText("Year");
+        fieldYear.setText("inserir ano de lançamento");
+        fieldYear.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                fieldYearFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fieldYearFocusLost(evt);
+            }
+        });
 
         buttomRemove.setBackground(new java.awt.Color(200, 50, 50));
         buttomRemove.setText("Remove");
@@ -214,6 +251,44 @@ public class TelaLogin extends javax.swing.JFrame {
     private void buttomRemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttomRemoveMouseClicked
         deleteClick();
     }//GEN-LAST:event_buttomRemoveMouseClicked
+
+    
+    
+    private void fieldTituloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldTituloFocusGained
+        fieldTitulo.setText("");
+    }//GEN-LAST:event_fieldTituloFocusGained
+
+    private void fieldTituloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldTituloFocusLost
+
+    }//GEN-LAST:event_fieldTituloFocusLost
+
+    private void fieldAuthorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldAuthorFocusGained
+        fieldAuthor.setText("");
+    }//GEN-LAST:event_fieldAuthorFocusGained
+
+    private void fieldAuthorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldAuthorFocusLost
+
+    }//GEN-LAST:event_fieldAuthorFocusLost
+
+    private void fieldPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldPriceFocusGained
+        fieldPrice.setText("");
+    }//GEN-LAST:event_fieldPriceFocusGained
+
+    private void fieldPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldPriceFocusLost
+
+    }//GEN-LAST:event_fieldPriceFocusLost
+
+    private void fieldYearFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldYearFocusGained
+        fieldYear.setText("");
+    }//GEN-LAST:event_fieldYearFocusGained
+
+    private void fieldYearFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldYearFocusLost
+
+    }//GEN-LAST:event_fieldYearFocusLost
+
+    private void ButtomSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtomSearchMouseClicked
+        new Search().setVisible(true);
+    }//GEN-LAST:event_ButtomSearchMouseClicked
 
     /**
      * @param args the command line arguments

@@ -5,7 +5,7 @@
 package com.mycompany.library.dao;
 
 import com.mycompany.library.database.ConnectSQLite;
-import com.mycompany.library.model.Livro;
+import com.mycompany.library.model.Book;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class BooksDAO {
 
     
-    public static void addBook( Livro livro){
+    public static void addBook( Book livro){
         String sql = "INSERT INTO books(title,author,price,year) VALUES (?,?,?,?)";
         ConnectSQLite connectSQLite = new ConnectSQLite();
         Connection connection = connectSQLite.connect();
@@ -40,7 +40,7 @@ public class BooksDAO {
         
     }
     
-    public static void updateBook(Livro meuLivro){
+    public static void updateBook(Book meuLivro){
         ConnectSQLite connectSQLite = new ConnectSQLite();
         Connection connection = connectSQLite.connect();
         
@@ -106,17 +106,17 @@ public class BooksDAO {
         return info;
     }
     
-    public static ArrayList<Livro> findBooks(){
+    public static ArrayList<Book> findBooks(){
         ConnectSQLite connectSQLite = new ConnectSQLite();
         Connection connection = connectSQLite.connect();
         String sql = "SELECT * FROM books";
-        ArrayList<Livro> info = new ArrayList<>();
+        ArrayList<Book> info = new ArrayList<>();
         
         try(Statement stmt = connection .createStatement()){
             ResultSet rs = stmt.executeQuery(sql);
             
             while(rs.next()){
-                Livro myBook = new Livro(
+                Book myBook = new Book(
                     rs.getString("title"),
                     rs.getString("author"),
                     rs.getDouble("price"),

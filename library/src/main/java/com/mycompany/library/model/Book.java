@@ -8,14 +8,14 @@ package com.mycompany.library.model;
  *
  * @author JOAOPEDROBACKXAVIER
  */
-public class Livro {
+public class Book {
         private int id;
     private String title; // Título do livro
     private String author; // Autor do livro
     private double price; // Preço do livro
     private int year; // Ano de publicação
 
-    public Livro(String title, String author, double price, int year) {
+    public Book(String title, String author, double price, int year) {
         this.title = title;
         this.author = author;
         this.price = price;
