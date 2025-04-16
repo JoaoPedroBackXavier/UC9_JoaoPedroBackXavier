@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author JOAOPEDROBACKXAVIER
  */
-public class UsuarioDao {
+public class UsuarioDAO {
     
     public boolean registrarUsuario(Usuario usuario) {
     String sql = "INSERT INTO usuarios (usuario, senha) VALUES (?, ?)";
@@ -109,14 +109,14 @@ public class UsuarioDao {
     
     public List<Usuario> listarUsuarios() {
     List<Usuario> usuarios = new ArrayList<>();
-    String sql = "SELECT usuario FROM usuarios";
+    String sql = "SELECT id, usuario FROM usuarios ORDER BY id DESC";
 
         try (Connection conn = ConnectionSQL.conectar(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Usuario usuario = new Usuario(rs.getString("usuario"), ""); // senha não exibida
+                Usuario usuario = new Usuario(rs.getInt("id"),rs.getString("usuario")); // senha não exibida
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {

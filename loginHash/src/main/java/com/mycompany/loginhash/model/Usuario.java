@@ -13,6 +13,11 @@ public class Usuario {
     private String email;
     private String senha;
 
+    public Usuario(int id, String email) {
+        this.email = email;
+        this.id = id;
+    }
+    
     public Usuario(String email, String senha) {
         this.email = email;
         this.senha = senha;
