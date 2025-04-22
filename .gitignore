@@ -1,4 +1,8 @@
 /bancodedados/target/
 /mavenproject1/target/
 /library/target/
+<<<<<<< HEAD
 /loginHash/target/
+=======
+/TrabalhoListaDeTarefas/target/
+>>>>>>> eedd00f (primeiro commit do projeto da lista de tarefas)
