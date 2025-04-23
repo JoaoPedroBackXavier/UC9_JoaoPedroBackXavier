@@ -4,6 +4,10 @@
 
 package com.mycompany.trabalholistadetarefas;
 
+import com.mycompany.TrabalhoListaDeTarefas.database.ConnectSQL;
+import com.mycompany.trabalholistadetarefas.view.Focus;
+import com.mycompany.trabalholistadetarefas.view.Tasks;
+
 /**
  *
  * @author JOAOPEDROBACKXAVIER
@@ -11,6 +15,7 @@ package com.mycompany.trabalholistadetarefas;
 public class TrabalhoListaDeTarefas {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        new Tasks().setVisible(true);
+        ConnectSQL.connect();
     }
 }

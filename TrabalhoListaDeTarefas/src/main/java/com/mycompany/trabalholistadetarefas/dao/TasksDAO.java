@@ -19,18 +19,18 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author JOAOPEDROBACKXAVIER
  */
-public class TarefasDAO {
+public class TasksDAO {
     
     
-    public boolean registerTask(Task task) {
-    String sql = "INSERT INTO tarefas (titulo,descricao,data_vencimento) VALUES (?, ?, ?)";
+    public static boolean registerTask(String title, String description, String expireDAte) {
+    String sql = "INSERT INTO tasks (title,description,expire_date) VALUES (?, ?, ?)";
 
         try (Connection conn = ConnectSQL.connect(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, task.getTitle());
-            stmt.setString(2, task.getDescription());
-            stmt.setString(3, task.getExpire_date());
+            stmt.setString(1, title);
+            stmt.setString(2, description);
+            stmt.setString(3, expireDAte);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -40,13 +40,13 @@ public class TarefasDAO {
     
     }
     
-    public boolean deleteTask(int id) {
-    String sql = "DELETE FROM tasks WHERE id = ?";
+    public static boolean deleteTask(String title) {
+    String sql = "DELETE FROM tasks WHERE title = ?";
 
         try (Connection conn = ConnectSQL.connect(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setString(1, title);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class TarefasDAO {
     
     public static List<Task> listTasks() {
     List<Task> tasks = new ArrayList<>();
-    String sql = "SELECT * FROM usuarios ORDER BY id DESC";
+    String sql = "SELECT * FROM tasks ORDER BY id ASC";
         try (Connection conn = ConnectSQL.connect(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
@@ -72,7 +72,7 @@ public class TarefasDAO {
         return tasks;
         }
     
-    public boolean editTask(int id,String title, String description, String expireDate){
+    public static boolean editTask(int id,String title, String description, String expireDate){
     String sql = "UPDATE tasks SET description = ?,title = ?,expireDate = ?, state = 'pendente'  WHERE id = ?";
 
     try (Connection conn = connect(); 
@@ -80,7 +80,7 @@ public class TarefasDAO {
         
         stmt.setString(1, description);
         stmt.setString(2, title);
-        stmt.setString(3, title);
+        stmt.setString(3, expireDate);
         stmt.setInt(4, id);        
         return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -88,5 +88,24 @@ public class TarefasDAO {
         return false;
     }
     }
+    
+    public static Task buscarTaskPorIdSelected(int idSelected) {
+    String sql = "SELECT * FROM tasks ORDER BY id LIMIT 1 OFFSET ?";
+
+    try (Connection conn = ConnectSQL.connect(); 
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setInt(1, idSelected);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            Task task = new Task(rs.getString("title"), rs.getString("description"), rs.getString("expire_date"));
+            return task;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
     
 }
