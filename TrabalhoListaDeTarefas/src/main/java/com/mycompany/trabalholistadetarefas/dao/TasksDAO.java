@@ -72,8 +72,8 @@ public class TasksDAO {
         return tasks;
         }
     
-    public static boolean editTask(int id,String title, String description, String expireDate){
-    String sql = "UPDATE tasks SET description = ?,title = ?,expireDate = ?, state = 'pendente'  WHERE id = ?";
+    public static boolean editTask(int id,String title, String description, String expireDate, String state){
+    String sql = "UPDATE tasks SET description = ?,title = ?,expire_date = ?, state = ?  WHERE id = ?";
 
     try (Connection conn = connect(); 
         PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -81,7 +81,8 @@ public class TasksDAO {
         stmt.setString(1, description);
         stmt.setString(2, title);
         stmt.setString(3, expireDate);
-        stmt.setInt(4, id);        
+        stmt.setString(4, state);
+        stmt.setInt(5, id);        
         return stmt.executeUpdate() > 0;
     } catch (SQLException e) {
         e.printStackTrace();
@@ -100,6 +101,8 @@ public class TasksDAO {
 
         if (rs.next()) {
             Task task = new Task(rs.getString("title"), rs.getString("description"), rs.getString("expire_date"));
+            task.setId(Integer.parseInt(rs.getString("id")));
+            task.setState(rs.getString("state"));
             return task;
         }
     } catch (SQLException e) {

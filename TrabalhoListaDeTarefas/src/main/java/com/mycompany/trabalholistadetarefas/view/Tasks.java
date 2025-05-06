@@ -24,9 +24,9 @@ public class Tasks extends javax.swing.JFrame {
          
     
     private void update() {
-        List<Task> lista = TasksDAO.listTasks();
+        List<Task> list = TasksDAO.listTasks();
         model.setRowCount(0);
-        for (Task task : lista) {
+        for (Task task : list) {
             model.addRow(new Object[]{task.getId(), task.getTitle(), task.getState()});
         }
         table.setModel(model);
@@ -127,7 +127,7 @@ public class Tasks extends javax.swing.JFrame {
     private void openButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtomActionPerformed
         int selectedIndex = table.getSelectedRow();
         Task task = TasksController.buscarTaskPorIdSelected(selectedIndex);
-        new Focus(task.getTitle(),task.getDescription(),task.getExpire_date(),task.getState()).setVisible(true);
+        new Focus(task.getTitle(),task.getDescription(),task.getExpire_date(),task.getState(),task.getId()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_openButtomActionPerformed
 

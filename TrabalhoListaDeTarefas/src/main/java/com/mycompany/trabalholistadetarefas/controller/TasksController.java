@@ -23,4 +23,15 @@ public class TasksController {
         return TasksDAO.deleteTask(title);
     }
     
+    public static void editTask(String id,String title, String description, String expireDate, boolean state){
+        String stateString = "";
+        int idInt = Integer.parseInt(id);
+        if(state == true){
+            stateString = "completed";
+        }else{
+            stateString = "pending";
+        }
+        TasksDAO.editTask(idInt, title, description, expireDate,stateString);
+    }
+    
 }

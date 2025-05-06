@@ -15,16 +15,17 @@ public class Focus extends javax.swing.JFrame {
     /**
      * Creates new form focus
      */
-    public Focus(String title,String description, String expire_date, String state) {
+    public Focus(String title,String description, String expire_date, String state, int id) {
         initComponents();
         titleLabel.setText(title);
         descriptionLabel.setText(description);
         expireDateLabel.setText(expire_date);
+        idLabel.setText(""+id);
         
         if("completed".equals(state)){
-            stateButtom.setEnabled(true);
+            stateButtom.setSelected(true);
         }else if("pending".equals(state)){
-            stateButtom.setEnabled(false);            
+            stateButtom.setSelected(false);            
         }
     }
 
@@ -44,6 +45,7 @@ public class Focus extends javax.swing.JFrame {
         deleteButtom = new javax.swing.JButton();
         stateButtom = new javax.swing.JCheckBox();
         okButtom = new javax.swing.JButton();
+        idLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Agency FB", 0, 18)); // NOI18N
@@ -58,6 +60,11 @@ public class Focus extends javax.swing.JFrame {
         expireDateLabel.setText("data de vencimento");
 
         editButtom.setText("edit");
+        editButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtomActionPerformed(evt);
+            }
+        });
 
         deleteButtom.setText("delete");
         deleteButtom.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +74,7 @@ public class Focus extends javax.swing.JFrame {
         });
 
         stateButtom.setText("state");
+        stateButtom.setEnabled(false);
 
         okButtom.setText("ok");
         okButtom.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +82,8 @@ public class Focus extends javax.swing.JFrame {
                 okButtomActionPerformed(evt);
             }
         });
+
+        idLabel.setText("id");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,30 +96,34 @@ public class Focus extends javax.swing.JFrame {
                         .addComponent(expireDateLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(descriptionLabel)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(editButtom)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(deleteButtom)
-                                    .addGap(34, 34, 34)
-                                    .addComponent(stateButtom)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(okButtom)))
-                            .addComponent(titleLabel))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(descriptionLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(editButtom)
+                                .addGap(18, 18, 18)
+                                .addComponent(deleteButtom)
+                                .addGap(34, 34, 34)
+                                .addComponent(stateButtom)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(okButtom))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(titleLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(idLabel)))
                         .addContainerGap(125, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(titleLabel)
-                .addGap(30, 30, 30)
+                .addGap(57, 57, 57)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleLabel)
+                    .addComponent(idLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(descriptionLabel)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(expireDateLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButtom)
                     .addComponent(editButtom)
@@ -133,6 +147,12 @@ public class Focus extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_okButtomActionPerformed
 
+    private void editButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtomActionPerformed
+        String id = idLabel.getText();
+        new Edit(id,titleLabel.getText(),descriptionLabel.getText(),expireDateLabel.getText()).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_editButtomActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -145,6 +165,7 @@ public class Focus extends javax.swing.JFrame {
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JButton editButtom;
     private javax.swing.JLabel expireDateLabel;
+    private javax.swing.JLabel idLabel;
     private javax.swing.JButton okButtom;
     private javax.swing.JCheckBox stateButtom;
     private javax.swing.JLabel titleLabel;
